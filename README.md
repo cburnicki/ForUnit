@@ -1,16 +1,9 @@
-# makeFortran
-A simple module that, given a fortran file as a target, looks up every dependency and creates a makefile.
+# ForUnit
+Despite the fact that there are some fortran unit test suites out there, I thought some of them were too complicated in their syntax or simply ran out of maintenance. One that I particularly liked because its syntax was very easy is NASA's FUnit (http://nasarb.rubyforge.org/). However, it was designed to work with fortran90 and does not work with fortran2003. 
 
-Given a target, this module creates a makefile for a fortran project.
-You may also set an array of compilerFlags resp. linkFlags.
+FUnit is written in ruby. Since I don't know ruby and had a bit of time, I decided to write an own unit test suite in python. And that's that. I need it to test code for my bachelors thesis, therefore it is sure missing some functionality (as well as some assert statements that I did not need so far) and has yet to be broadly tested. 
 
-# Example:
+So don't use it to test any security sensitive code.
 
-import makeFortran as maker
+However, if someone else wants to use it: You are very welcome to contribute!
 
-maker.target = 'TestRunner'
-maker.compilerFlags = ['-g']
-maker.linkFlags = ['-g']
-maker.createMakeFile()
-
-creates the makefile for TestRunner.f03 and its dependencies

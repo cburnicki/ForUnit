@@ -155,7 +155,13 @@ def createTestRunner():
 
 # This method uses the makeFortran module to create a makefile for the TestRunner
 def createMakeFile():
+
+    global compilerFlags
+    global linkFlags
+
     maker.target = 'TestRunner'
+    maker.compilerFlags = compilerFlags
+    maker.linkFlags = linkFlags
     maker.makeFileName = 'makeTestRunner'
 
     maker.createMakeFile()
@@ -226,7 +232,7 @@ def printOverallResult():
         msg = ShellFormat.BOLD + ShellFormat.OKGREEN + 'ALL ' + str(numberOfTests) + ' TESTS PASSED!' + ShellFormat.END + '\n'
 
     print '+'*100+'\n'
-    print msg
+    print '\t' + msg
 
 def run():
 
@@ -237,7 +243,7 @@ def run():
     global testFileNames
     global cwd
 
-    print ShellFormat.OKBLUE + ShellFormat.BOLD + 'RUNNING FORUNIT TESTSUITE' + ShellFormat.END
+    print ShellFormat.OKBLUE + ShellFormat.BOLD + '\n\tRUNNING FORUNIT TESTSUITE\n' + ShellFormat.END
 
     findTestFiles(cwd)
 
@@ -262,7 +268,7 @@ def run():
 
     print compileTests()
 
-    print 'run TestRunner...\n\n'
+    print 'run TestRunner...'
 
     runTestRunner()
 

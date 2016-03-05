@@ -2,17 +2,15 @@ import ShellFormat
 
 class TestFileParser():
 
-    def __init__(self, testFileName, fortranVersion = '03'):
+    def __init__(self, testFileName, fortranExtension = '.f03'):
         # filename of the test file (*.fu)
         self.testFileName = testFileName
         # name of the test in the .fu file
         self.testName = testFileName[:-3]
 
-        self.fortranFileExtension = '.f'+fortranVersion
-
         # name of the test module contains the name of the module to test + a constant
         self.fortranModuleName = self.testName + 'ForUnitTest'
-        self.fortranTestfileName = self.fortranModuleName + self.fortranFileExtension
+        self.fortranTestfileName = self.fortranModuleName + fortranExtension
 
         # prefix of the test subroutines that will be created by this parser
         self.subroutinePrefix = 'test_'+self.testName+'_'
@@ -214,7 +212,7 @@ class TestFileParser():
 
         errMsg += '."\n'
 
-        errMsg += '\t\t WRITE(*,*) "on line ' + str(self.currentLine) + ' in file ' + self.testFileName + '"\n'
+        errMsg += '\t\t write(*,*) "on line ' + str(self.currentLine) + ' in file ' + self.testFileName + '"\n'
 
         return errMsg
 
@@ -253,7 +251,7 @@ class TestFileParser():
                 self.parserError('Can\'t leave subroutine without being in a subroutine!')
 
             # leave the fortran subroutine
-            newLine += 'end subroutine ' + self.subroutinePrefix + line[9:].strip()+'\n\n'
+            newLine += 'end subroutine ' + self.subroutinePrefix + self.currentTestRoutine+'\n\n'
 
             # tell the parser that it is not inside of a subroutine anymore
             self.currentTestRoutine = ''

@@ -136,6 +136,38 @@ class TestFileParser():
 
         return test
 
+    # creates a test to assert two arrays equal (shape and content)
+    def createAssertLogicalArrayEqualTest(self, line):
+
+        line = line.strip()
+        i = len('assert_logical_array_euqal(')
+        # remove the "assert_array_equal(" statement
+        line = line[i:]
+
+        # find both var names
+        commaPos = line.find(',')
+        array1 = line[:commaPos].strip()
+        # second will end one character before the line end ")"
+        array2 = line[commaPos+1:-1].strip()
+
+        # error message
+        msg = 'shape of '+array1+' does not match shape of '+array2
+
+        # the actual fortran test logic
+        test = '\tif ( .not. all( shape('+array1+') == shape('+array2+') ) ) then\n'
+        test += self.createFortranErrorMessage('assert array equal', msg)
+        test += '\tend if\n\n'
+
+        msg = array1+' does not match '+array2
+
+        test += '\tif ( .not. all('+array1+' .eqv. '+array2+') ) then\n'
+        test += self.createFortranErrorMessage('assert array equal', msg)
+        test += '\tend if\n\n'
+
+        self.numberOfTests += 1
+
+        return test
+
     # creates a test to assert a variable true
     def createAssertTrueTest(self, line):
 
@@ -329,6 +361,13 @@ class TestFileParser():
         if line.find('assert_array_equal') > -1:
 
             newLine = self.createAssertArrayEqualTest(line)
+
+            return newLine
+
+         # Create an assert array equal test
+        elif line.find('assert_logical_array_equal') > -1:
+
+            newLine = self.createAssertLogicalArrayEqualTest(line)
 
             return newLine
 

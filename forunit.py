@@ -54,7 +54,10 @@ def findTestFiles(path='./'):
             testName = filename[:-3]
             print 'found test '+filename
             # found a forunit testfile, search for the module
-            foundExtensions.append(findOriginalModule(testName))
+            extension = findOriginalModule(testName)
+
+            if extension not in foundExtensions:
+                foundExtensions.append(extension)
 
             testFileNames.append(filename)
             testNames.append(testName)
@@ -143,7 +146,7 @@ def createTestRunner():
                 s += '\tcall ' + parser.subroutinePrefix + 'teardown()\n'
 
     # print a FINISHED statement so the executing python program knows when the TestRunner finished testing
-        s += '\n\tWRITE(*,*) "FINISHED TESTRUNNER"'
+    s += '\n\tWRITE(*,*) "FINISHED TESTRUNNER"'
 
     s += '\nend program TestRunner'
 
@@ -169,6 +172,9 @@ def createMakeFile():
 # Compiles the tests using make
 def compileTests():
     output = subprocess.call('make -f makeTestRunner', shell=True)
+
+    if output != 0:
+        print ShellFormat.ERROR + '\n\tA COMPILER ERROR OCCURRED: code '+str(output)+ShellFormat.END+'\n'
 
     return output
 
@@ -197,7 +203,7 @@ def runTestRunner():
 
 # Deletes all files created by this test environment
 def cleanup():
-    deleteList = ['TestRunner.o', 'TestRunner'+fortranExtension, 'TestRunner.exe']
+    deleteList = ['TestRunner.o', 'TestRunner'+fortranExtension, 'TestRunner.exe', '*ForUnitTest.*']
     for testModule in testModuleNames:
         deleteList.append(testModule+fortranExtension)
         deleteList.append(testModule+'.o')
@@ -266,7 +272,7 @@ def run():
 
     print '\n'+'+'*100+'\n\ncompiling...\n'
 
-    print compileTests()
+    compileTests()
 
     print 'run TestRunner...'
 
@@ -274,3 +280,5 @@ def run():
 
 
     printOverallResult()
+
+run()

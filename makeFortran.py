@@ -60,8 +60,14 @@ def getDependencies(filename):
     # get dependencies in this file
     for line in f.readlines():
 
-            pos = line.find('use ')
-            if pos > -1:
+            line = line.strip("\t").strip()
+
+            if line[0:1] == "!":
+                continue
+
+            pos = line.strip().find('use ')
+
+            if -1 < pos < 9:
                 dependency = line[pos+4:].strip()
                 newDependencies.append(dependency)
 
@@ -168,4 +174,16 @@ def createMakeFile():
     f.write(fileContent)
     f.close()
 
-
+# target = input('Please enter a target file: ')
+# makeFileName = input('Please enter a makefilename (default: makefile): ')
+#
+# if makeFileName == '':
+#     makeFileName = 'makefile'
+#
+# cFlags = input('Additional compiler flags: ')
+# compilerFlags = cFlags.split(' ')
+#
+# lFlags = input('Additional link flags: ')
+# linkFlags = cFlags.split(' ')
+#
+# createMakeFile()

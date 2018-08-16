@@ -1,3 +1,6 @@
+## THIS PROJECT IS UNMAINTAINED
+This project was set up to write proper unit tests for some university projects. However, it is unmaintained and should not be used to test any critical code.
+
 # ForUnit
 Despite the fact that there are some fortran unit test suites out there, I thought some of them were too complicated in their syntax or simply ran out of maintenance. One that I particularly liked because its syntax was very easy is NASA's FUnit (http://nasarb.rubyforge.org/). However, it was designed to work with fortran90 and does not work with fortran2003. 
 
@@ -9,7 +12,7 @@ So don't use it to test any security sensitive code.
 
 However, if someone else wants to use it: You are very welcome to contribute!
 
-##Usage
+## Usage
 
 Suppose you have a fortran module named Network.f03 (or .f70, .f90, .f95). Simply create another file Network.fu in the same directory. Now you would only have to run the command `forunit` to execute every .fu unit test in that directory and get a summary of your test results.
 
